@@ -4,6 +4,10 @@ import (
 	"strings"
 )
 
+func detect() {
+
+}
+
 func detectByExtension(filename string) (r string) {
 	var ext string
 	extArr := strings.Split(filename, ".")

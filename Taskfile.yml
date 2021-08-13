@@ -32,7 +32,7 @@ vars:
 
 tasks:
     run:
-        go run {{.GOFILES}}
+        go run {{.GOFILES}} -c conf/coda.toml testdata/python.py
 
     default:
         cmds:
