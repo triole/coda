@@ -1,32 +1,25 @@
 package main
 
 import (
-	"strings"
+	"regexp"
 )
 
-func detect() {
-
+func (coda tCoda) detect(filename string) (b bool, r [][]string) {
+	for _, filetype := range coda.FileTypes {
+		b, r = coda.detectByRegex(filename, filetype)
+		if b == true {
+			break
+		}
+	}
+	return
 }
 
-func detectByExtension(filename string) (r string) {
-	var ext string
-	extArr := strings.Split(filename, ".")
-	if len(extArr) > 1 {
-		ext = extArr[len(extArr)-1]
-	}
-	switch strings.ToLower(ext) {
-	case "go":
-		r = "golang"
-	case "js":
-		r = "javascript"
-	case "json":
-		r = "json"
-	case "md":
-		r = "markdown"
-	case "py":
-		r = "python"
-	case "rs":
-		r = "rust"
+func (coda tCoda) detectByRegex(filename string, filetype tFileType) (b bool, r [][]string) {
+	rx := regexp.MustCompile(filetype.Regex)
+	b = false
+	if rx.MatchString(filename) == true {
+		b = true
+		r = filetype.Cmds
 	}
 	return
 }

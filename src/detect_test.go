@@ -1,20 +1,26 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestDetectByExtension(t *testing.T) {
-	assertDetectByExtension("main.go", "golang", t)
-	assertDetectByExtension("main.py", "python", t)
-	assertDetectByExtension("main.md", "markdown", t)
-	assertDetectByExtension("main.rs", "rust", t)
+var (
+	coda = readConfig("../conf/coda.toml")
+)
+
+func TestDetect(t *testing.T) {
+	assertDetect("main.go", "go", t)
+	assertDetect("main.py", "autoflake", t)
+	assertDetect("main.md", "mdtoc", t)
+	assertDetect("main.rs", "rustfmt", t)
 }
 
-func assertDetectByExtension(filename string, exprectedResult string, t *testing.T) {
-	res := detectByExtension(filename)
-	if res != exprectedResult {
+func assertDetect(filename string, expectedCmd string, t *testing.T) {
+	_, cmds := coda.detect(filename)
+	if expectedCmd != cmds[0][0] {
 		t.Errorf(
-			"Assertion detect by extension failed: %q, %q != %q",
-			filename, res, exprectedResult,
+			"Assertion detect by extension failed: %q, %q",
+			filename, cmds,
 		)
 	}
 }

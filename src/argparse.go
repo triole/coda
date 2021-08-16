@@ -18,8 +18,9 @@ var (
 )
 
 var CLI struct {
-	Filename    string `help:"file to process" arg`
+	Filename    string `help:"file to process" arg required`
 	Config      string `help:"configuration file" short:c`
+	Debug       bool   `help:"debug mode" short:d`
 	VersionFlag bool   `help:"display version" short:V`
 }
 

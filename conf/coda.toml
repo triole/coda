@@ -1,57 +1,50 @@
 [[ft]]
-name = "bash"
 regex = ".*\\.sh$"
 shebang = "#!/bin/bash"
 cmds = [
-    "shfmt -w -i 4 <FILENAME>",
-    "shellcheck -e SC1090,SC2154 <FILENAME>",
-    "bats <SHORTNAME_NO_EXT>_test.bats"
+    ["shfmt", "-w", "-i", "4", "{FILENAME}"],
+    ["shellcheck", "-e", "SC1090,SC2154", "{FILENAME}"],
+    ["bats", "{SHORTNAME_NO_EXT}_test.bats"]
 ]
 
 [[ft]]
-name = "bats"
 regex = ".*\\.bats$"
 cmds = [
-    "bats <SHORTNAME_NO_EXT>_test.bats"
+    ["bats", "{SHORTNAME_NO_EXT}_test.bats"]
 ]
 
 [[ft]]
-name = "caddyfile"
 regex = ".*/Caddyfile$"
 cmds = [
-    "caddy fmt <FILENAME"
+    ["caddy", "fmt", "{FILENAME}"]
 ]
 
 [[ft]]
-name = "go"
 regex = ".*\\.go$"
 cmds = [
-    "go test -v"
+    ["go", "test", "-v"]
 ]
 
 [[ft]]
-name = "markdown"
 regex = ".*\\.md$"
 cmds = [
-    "mdtoc -f <FILENAME>",
-    "markdownfmt -w <FILENAME>"
+    ["mdtoc", "-f", "{FILENAME}"],
+    ["markdownfmt", "-w", "{FILENAME}"]
 ]
 
 [[ft]]
-name = "pytest"
 regex = ".*\\.py$"
 cmds = [
-    "autoflake --remove-all-unused-imports -i <FILENAME>",
-    "isort <FILENAME>",
-    "pytest -v <SHORTNAME_NO_EXT>_test.py"
+    ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
+    ["isort", "{FILENAME}"],
+    ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
 ]
 
 [[ft]]
-name = "rust"
 regex = ".*\\.rs$"
 cmds = [
-    "rustfmt <FILENAME>",
-    "cargo test --color always"
+    ["rustfmt", "{FILENAME}"],
+    ["cargo", "test", "--color", "always"]
 ]
 
 [settings]

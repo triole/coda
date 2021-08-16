@@ -1,12 +1,17 @@
 package main
 
-import (
-	"gmm/util"
-)
+import "fmt"
 
 func main() {
 	parseArgs()
-	conf := readConfig(CLI.Config)
+	coda := readConfig(CLI.Config)
+	_, cmds := coda.detect(CLI.Filename)
 
-	util.Pprint(conf)
+	if CLI.Debug == true {
+		fmt.Printf("\n%s\n", "Var map")
+		pprint(coda.VarMap)
+		fmt.Printf("\n%s\n", "Commands")
+	}
+
+	coda.execute(cmds)
 }
