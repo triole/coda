@@ -1,4 +1,5 @@
 [[ft]]
+name = "bash"
 regex = ".*\\.sh$"
 shebang = "#!/bin/bash"
 cmds = [
@@ -8,24 +9,29 @@ cmds = [
 ]
 
 [[ft]]
+name = "bats"
 regex = ".*\\.bats$"
+shebang = "#!/usr/bin/env bats"
 cmds = [
     ["bats", "{SHORTNAME_NO_EXT}_test.bats"]
 ]
 
 [[ft]]
+name = "caddyfile"
 regex = ".*/Caddyfile$"
 cmds = [
     ["caddy", "fmt", "{FILENAME}"]
 ]
 
 [[ft]]
+name = "golang"
 regex = ".*\\.go$"
 cmds = [
     ["go", "test", "-v"]
 ]
 
 [[ft]]
+name = "markdown"
 regex = ".*\\.md$"
 cmds = [
     ["mdtoc", "-f", "{FILENAME}"],
@@ -33,7 +39,9 @@ cmds = [
 ]
 
 [[ft]]
+name = "python"
 regex = ".*\\.py$"
+shebang = "#!/usr/bin/python3"
 cmds = [
     ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
     ["isort", "{FILENAME}"],
@@ -41,6 +49,7 @@ cmds = [
 ]
 
 [[ft]]
+name = "rust"
 regex = ".*\\.rs$"
 cmds = [
     ["rustfmt", "{FILENAME}"],

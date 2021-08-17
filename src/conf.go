@@ -15,9 +15,10 @@ type tCoda struct {
 }
 
 type tFileType struct {
-	Name  string `toml:"name"`
-	Regex string
-	Cmds  [][]string
+	Name    string `toml:"name"`
+	Shebang string `toml:"shebang"`
+	Regex   string
+	Cmds    [][]string
 }
 
 type tSettings struct {

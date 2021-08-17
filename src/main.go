@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	parseArgs()
 	coda := readConfig(CLI.Config)
-	_, cmds := coda.detect(CLI.Filename)
+	ft := coda.detect(CLI.Filename)
 
 	if CLI.Debug == true {
 		fmt.Printf("\n%s\n", "Var map")
@@ -13,5 +13,5 @@ func main() {
 		fmt.Printf("\n%s\n", "Commands")
 	}
 
-	coda.execute(cmds)
+	coda.execute(ft.Cmds)
 }

@@ -4,22 +4,36 @@ import (
 	"regexp"
 )
 
-func (coda tCoda) detect(filename string) (b bool, r [][]string) {
+func (coda tCoda) detect(filename string) (ft tFileType) {
 	for _, filetype := range coda.FileTypes {
-		b, r = coda.detectByRegex(filename, filetype)
-		if b == true {
-			break
+		ft = coda.detectByRegex(filename, filetype)
+		if ft.Name != "" {
+			return
 		}
+	}
+
+	for _, filetype := range coda.FileTypes {
+		ft = coda.detectByShebang(filename, filetype)
+		if ft.Name != "" {
+			return
+		}
+	}
+
+	return
+}
+
+func (coda tCoda) detectByRegex(filename string, filetype tFileType) (ft tFileType) {
+	rx := regexp.MustCompile(filetype.Regex)
+	if rx.MatchString(filename) == true {
+		ft = filetype
 	}
 	return
 }
 
-func (coda tCoda) detectByRegex(filename string, filetype tFileType) (b bool, r [][]string) {
-	rx := regexp.MustCompile(filetype.Regex)
-	b = false
-	if rx.MatchString(filename) == true {
-		b = true
-		r = filetype.Cmds
+func (coda tCoda) detectByShebang(filename string, filetype tFileType) (ft tFileType) {
+	shebang := getFirstLineOfFile(filename)
+	if shebang == filetype.Shebang {
+		ft = filetype
 	}
 	return
 }
