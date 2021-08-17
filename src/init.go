@@ -9,9 +9,11 @@ import (
 )
 
 type tCoda struct {
-	FileTypes []tFileType `toml:"ft"`
-	Settings  tSettings   `toml:"settings"`
-	VarMap    map[string]string
+	FileTypes     []tFileType `toml:"ft"`
+	Settings      tSettings   `toml:"settings"`
+	FileConfig    string
+	FileToProcess string
+	VarMap        map[string]string
 }
 
 type tFileType struct {
@@ -25,19 +27,21 @@ type tSettings struct {
 	IgnoreList []string
 }
 
-func readConfig(filename string) (coda tCoda) {
-	if filename != "" {
+func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
+	coda.FileConfig = fileConfig
+	coda.FileToProcess = fileToProcess
+	if fileConfig != "" {
 		var err error
-		raw, err := ioutil.ReadFile(filename)
+		raw, err := ioutil.ReadFile(fileConfig)
 		if err != nil {
-			log.Fatalf("Error reading general config %q, %q", filename, err)
+			log.Fatalf("Error reading config %q, %q", fileConfig, err)
 		}
 		err = toml.Unmarshal(raw, &coda)
 		if err != nil {
-			log.Fatalf("Error unmarshal %q, %q", filename, err)
+			log.Fatalf("Error unmarshal %q, %q", fileConfig, err)
 		}
 	}
-	coda.VarMap = makeVarMap(CLI.Filename)
+	coda.VarMap = makeVarMap(fileToProcess)
 	return
 }
 

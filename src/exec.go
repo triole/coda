@@ -44,12 +44,16 @@ func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	return stdBuffer.Bytes(), exitcode, err
 }
 
-func (coda tCoda) expandVars(cmdArr []string) []string {
+func (coda tCoda) expandVars(cmdArr []string) (r []string) {
+	r = cmdArr
 	for idx, el := range cmdArr {
 		for key, val := range coda.VarMap {
-			cmdArr[idx] = strings.Replace(
+			new := strings.Replace(
 				el, "{"+strings.ToUpper(key)+"}", val, -1,
 			)
+			if new != el {
+				r[idx] = new
+			}
 		}
 	}
 	return cmdArr

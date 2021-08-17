@@ -20,7 +20,7 @@ cmds = [
 name = "caddyfile"
 regex = ".*/Caddyfile$"
 cmds = [
-    ["caddy", "fmt", "{FILENAME}"]
+    ["caddy", "fmt", "--overwrite", "{FILENAME}"]
 ]
 
 [[ft]]

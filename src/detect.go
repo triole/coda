@@ -4,16 +4,16 @@ import (
 	"regexp"
 )
 
-func (coda tCoda) detect(filename string) (ft tFileType) {
+func (coda tCoda) detect() (ft tFileType) {
 	for _, filetype := range coda.FileTypes {
-		ft = coda.detectByRegex(filename, filetype)
+		ft = coda.detectByRegex(coda.FileToProcess, filetype)
 		if ft.Name != "" {
 			return
 		}
 	}
 
 	for _, filetype := range coda.FileTypes {
-		ft = coda.detectByShebang(filename, filetype)
+		ft = coda.detectByShebang(coda.FileToProcess, filetype)
 		if ft.Name != "" {
 			return
 		}

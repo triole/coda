@@ -9,27 +9,20 @@ import (
 	"testing"
 )
 
-var (
-	coda = readConfig("../conf/coda.toml")
-)
-
 func TestDetect(t *testing.T) {
 	files := getFiles("../testdata")
 	for _, filename := range files {
-		expectedType := find(`[^/]+/[^/]+$`, filename)
-		expectedType = find(`^.*?/`, expectedType)
-		expectedType = expectedType[0 : len(expectedType)-1]
-		assertDetect(filename, expectedType, t)
-	}
-}
-
-func assertDetect(filename string, expectedName string, t *testing.T) {
-	ft := coda.detect(filename)
-	if expectedName != ft.Name {
-		t.Errorf(
-			"Assertion detect failed: %q, %q != %q",
-			filename, expectedName, ft.Name,
-		)
+		expectedName := find(`[^/]+/[^/]+$`, filename)
+		expectedName = find(`^.*?/`, expectedName)
+		expectedName = expectedName[0 : len(expectedName)-1]
+		coda := initCoda("../conf/coda.toml", filename)
+		ft := coda.detect()
+		if expectedName != ft.Name {
+			t.Errorf(
+				"Assertion detect failed: %q, %q != %q",
+				filename, expectedName, ft.Name,
+			)
+		}
 	}
 }
 

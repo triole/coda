@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,7 +21,7 @@ var (
 
 var CLI struct {
 	Filename    string `help:"file to process" arg required`
-	Config      string `help:"configuration file" short:c`
+	Config      string `help:"configuration file" short:c default:${config}`
 	Debug       bool   `help:"debug mode" short:d`
 	VersionFlag bool   `help:"display version" short:V`
 }
@@ -38,6 +40,7 @@ func parseArgs() {
 		}),
 		kong.Vars{
 			"curdir": curdir,
+			"config": path.Join(getBindir(), appName+".toml"),
 		},
 	)
 	_ = ctx.Run()
@@ -60,4 +63,13 @@ func alnum(s string) string {
 	s = strings.ToLower(s)
 	re := regexp.MustCompile("[^a-z0-9_-]")
 	return re.ReplaceAllString(s, "-")
+}
+
+func getBindir() (s string) {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	s = filepath.Dir(ex)
+	return
 }
