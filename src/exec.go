@@ -40,6 +40,9 @@ func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 			}
 		}
 	}
+	if err != nil {
+		fmt.Printf("An error occured: %s\n", err)
+	}
 	fmt.Printf("")
 	return stdBuffer.Bytes(), exitcode, err
 }
