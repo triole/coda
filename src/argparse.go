@@ -20,7 +20,7 @@ var (
 )
 
 var CLI struct {
-	Filename    string `help:"file to process" arg required`
+	Filename    string `help:"file to process, positional arg required" arg optional`
 	Config      string `help:"configuration file" short:c default:${config}`
 	Debug       bool   `help:"debug mode" short:d`
 	VersionFlag bool   `help:"display version" short:V`
@@ -48,6 +48,10 @@ func parseArgs() {
 	if CLI.VersionFlag == true {
 		printBuildTags(BUILDTAGS)
 		os.Exit(0)
+	}
+	if CLI.Filename == "" {
+		fmt.Printf("%s\n", "Error: Positional arg expected. Please pass file name.")
+		os.Exit(1)
 	}
 	// ctx.FatalIfErrorf(err)
 }
