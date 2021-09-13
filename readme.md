@@ -12,7 +12,7 @@
 
 ## Configuration
 
-All definitions are made in the `conf.toml`. This is how a typical entry looks:
+All definitions are made in the `conf.toml`, which has to be in the same path as the executable binary. This is how a typical entry looks:
 
 ```toml
 [[ft]]
@@ -25,6 +25,8 @@ cmds = [
     ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
 ]
 ```
+
+The `conf` folder in the repository provides a [full example](https://github.com/triole/coda/blob/master/conf/coda.toml).
 
 As you can see the configuration is a list of entries. They function like this
 
