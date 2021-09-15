@@ -27,6 +27,8 @@ cmds = [
 name = "golang"
 regex = ".*\\.go$"
 cmds = [
+    ["goimports", "-w", "{FILENAME}"],
+    ["gofmt", "-w", "{FILENAME}"],
     ["go", "test", "-v"]
 ]
 
