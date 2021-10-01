@@ -1,10 +1,10 @@
-# Coda
+# Coda ![build](https://github.com/triole/coda/actions/workflows/build.yaml/badge.svg)
 
 <!--- mdtoc: toc begin -->
 
-1.	[Synopsis](#synopsis)
-2.	[Configuration](#configuration)
-3.	[How to use?](#how-to-use-)<!--- mdtoc: toc end -->
+1. [Synopsis](#synopsis)
+2. [Configuration](#configuration)
+3. [How to use?](#how-to-use-)<!--- mdtoc: toc end -->
 
 ## Synopsis
 
