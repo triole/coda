@@ -37,7 +37,7 @@ name = "markdown"
 regex = ".*\\.md$"
 cmds = [
     ["mdtoc", "-f", "{FILENAME}"],
-    ["markdownfmt", "-w", "{FILENAME}"]
+    ["mdox", "fmt", "{FILENAME}"]
 ]
 
 [[ft]]
