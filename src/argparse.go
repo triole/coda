@@ -22,6 +22,7 @@ var (
 var CLI struct {
 	Filename    string `help:"file to process, positional arg required" arg optional`
 	Config      string `help:"configuration file" short:c default:${config}`
+	PrintVars   bool   `help:"print available vars" short:p`
 	Debug       bool   `help:"debug mode" short:d`
 	VersionFlag bool   `help:"display version" short:V`
 }
@@ -47,6 +48,10 @@ func parseArgs() {
 
 	if CLI.VersionFlag == true {
 		printBuildTags(BUILDTAGS)
+		os.Exit(0)
+	}
+	if CLI.PrintVars == true {
+		printAvailableVars()
 		os.Exit(0)
 	}
 	if CLI.Filename == "" {

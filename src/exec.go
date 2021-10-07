@@ -6,13 +6,20 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"strings"
 	"syscall"
 )
 
 func (coda tCoda) execute(cmds [][]string) {
+	if CLI.Debug == true {
+		fmt.Printf(
+			"\n\n%s\n", "Commands (1st template, 2nd what would have been run)",
+		)
+	}
 	for _, cmdArr := range cmds {
-		cmdArr = coda.expandVars(cmdArr)
+		if CLI.Debug == true {
+			fmt.Printf("\n%q\n", cmdArr)
+		}
+		cmdArr = coda.iterTemplate(cmdArr, coda.VarMap)
 		if CLI.Debug == true {
 			fmt.Printf("%q\n", cmdArr)
 		} else {
@@ -45,19 +52,4 @@ func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	}
 	fmt.Printf("")
 	return stdBuffer.Bytes(), exitcode, err
-}
-
-func (coda tCoda) expandVars(cmdArr []string) (r []string) {
-	r = cmdArr
-	for idx, el := range cmdArr {
-		for key, val := range coda.VarMap {
-			new := strings.Replace(
-				el, "{"+strings.ToUpper(key)+"}", val, -1,
-			)
-			if new != el {
-				r[idx] = new
-			}
-		}
-	}
-	return cmdArr
 }

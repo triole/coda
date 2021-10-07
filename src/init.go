@@ -3,7 +3,6 @@ package main
 import (
 	"io/ioutil"
 	"log"
-	"strings"
 
 	"github.com/pelletier/go-toml"
 )
@@ -13,7 +12,7 @@ type tCoda struct {
 	Settings      tSettings   `toml:"settings"`
 	FileConfig    string
 	FileToProcess string
-	VarMap        map[string]string
+	VarMap        tVarMap
 }
 
 type tFileType struct {
@@ -42,22 +41,5 @@ func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 		}
 	}
 	coda.VarMap = makeVarMap(fileToProcess)
-	return
-}
-
-func makeVarMap(filename string) (varmap map[string]string) {
-	varmap = make(map[string]string)
-	varmap["filename"] = filename
-	varmap["shortname"] = find(`[^/]+$`, filename)
-	if strings.Contains(filename, ".") == true {
-		arr := strings.Split(filename, ".")
-		varmap["ext"] = arr[len(arr)-1]
-	}
-	varmap["filename_no_ext"] = strings.Replace(
-		filename, "."+varmap["ext"], "", -1,
-	)
-	varmap["shortname_no_ext"] = strings.Replace(
-		varmap["shortname"], "."+varmap["ext"], "", -1,
-	)
 	return
 }

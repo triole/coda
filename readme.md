@@ -37,15 +37,21 @@ As you can see the configuration is a list of entries. They function like this
 | shebang | 2nd method file type detection                                    |
 | cmds    | list of commands to run                                           |
 
-There is a set of variables available. If used in command they are replaced by a part if the input file name. I hope they are be quite self explanatory. This is what they look like:
+There is a set of variables that can be used inside a config. They get replaced by their appropriate values. This is what they look like:
 
-| var                | explanation                              |
-|--------------------|------------------------------------------|
-| {FILENAME}         | full file name including path            |
-| {FILENAME_NO_EXT}  | like the one above but without extension |
-| {SHORTNAME}        | file name without path                   |
-| {SHORTNAME_NO_EXT} | above, but missing extension             |
-| {EXT}              | file extension only                      |
+```go mdox-exec="r -p"
+
+Available variables
+
+ VARIABLE              | DESCRIPTION                                 
+-----------------------+---------------------------------------------
+ {{.extension}}        | file's extension                            
+ {{.filename}}         | full file name                              
+ {{.filename_no_ext}}  | full file name without preceeding extension 
+ {{.shortname}}        | short name, file name without path          
+ {{.shortname_no_ext}} | short name without extension                
+
+```
 
 ## How to use?
 

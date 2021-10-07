@@ -8,6 +8,7 @@ import (
 
 func main() {
 	parseArgs()
+
 	fileConfig := makeAbs(CLI.Config)
 	fileToProcess := makeAbs(CLI.Filename)
 
@@ -16,10 +17,9 @@ func main() {
 	ft := coda.detect()
 
 	if CLI.Debug == true {
-		fmt.Printf("%q\n", "Applied config")
-		pprint(coda)
+		fmt.Printf("\n\n%s\n\n", "Used VarMap")
+		pprint(coda.VarMap)
 	}
-
 	coda.execute(ft.Cmds)
 }
 

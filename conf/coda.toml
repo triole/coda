@@ -3,9 +3,9 @@ name = "bash"
 regex = ".*\\.sh$"
 shebang = "#!/bin/bash"
 cmds = [
-    ["shfmt", "-w", "-i", "4", "{FILENAME}"],
-    ["shellcheck", "-e", "SC1090,SC2154", "{FILENAME}"],
-    ["bats", "{SHORTNAME_NO_EXT}_test.bats"]
+    ["shfmt", "-w", "-i", "4", "{{.filename}}"],
+    ["shellcheck", "-e", "SC1090,SC2154", "{{.filename}}"],
+    ["bats", "{{.shortname_no_ext}}_test.bats"]
 ]
 
 [[ft]]
@@ -13,22 +13,22 @@ name = "bats"
 regex = ".*\\.bats$"
 shebang = "#!/usr/bin/env bats"
 cmds = [
-    ["bats", "{SHORTNAME_NO_EXT}_test.bats"]
+    ["bats", "{{.shortname_no_ext}}_test.bats"]
 ]
 
 [[ft]]
 name = "caddyfile"
 regex = ".*/Caddyfile$"
 cmds = [
-    ["caddy", "fmt", "--overwrite", "{FILENAME}"]
+    ["caddy", "fmt", "--overwrite", "{{.filename}}"]
 ]
 
 [[ft]]
 name = "golang"
 regex = ".*\\.go$"
 cmds = [
-    ["goimports", "-w", "{FILENAME}"],
-    ["gofmt", "-w", "{FILENAME}"],
+    ["goimports", "-w", "{{.filename}}"],
+    ["gofmt", "-w", "{{.filename}}"],
     ["go", "test", "-v"]
 ]
 
@@ -36,8 +36,8 @@ cmds = [
 name = "markdown"
 regex = ".*\\.md$"
 cmds = [
-    ["mdtoc", "-f", "{FILENAME}"],
-    ["mdox", "fmt", "{FILENAME}"]
+    ["mdtoc", "-f", "{{.filename}}"],
+    ["mdox", "fmt", "{{.filename}}"]
 ]
 
 [[ft]]
@@ -45,16 +45,16 @@ name = "python"
 regex = ".*\\.py$"
 shebang = "#!/usr/bin/python3"
 cmds = [
-    ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
-    ["isort", "{FILENAME}"],
-    ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
+    ["autoflake", "--remove-all-unused-imports", "-i", "{{.filename}}"],
+    ["isort", "{{.filename}}"],
+    ["pytest", "-v", "{{.shortname_no_ext}}_test.py"]
 ]
 
 [[ft]]
 name = "rust"
 regex = ".*\\.rs$"
 cmds = [
-    ["rustfmt", "{FILENAME}"],
+    ["rustfmt", "{{.filename}}"],
     ["cargo", "test", "--color", "always"]
 ]
 
