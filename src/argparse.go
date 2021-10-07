@@ -64,8 +64,14 @@ func parseArgs() {
 func printBuildTags(buildtags string) {
 	regexp, _ := regexp.Compile(`({|}|,)`)
 	s := regexp.ReplaceAllString(buildtags, "\n")
-	s = strings.Replace(s, "_subversion: ", "Version: "+appMainversion+".", -1)
-	fmt.Printf("%s\n", s)
+	s = strings.Replace(s, "_subversion: ", "version: "+appMainversion+".", -1)
+	arr := strings.Split(s, "\n")
+	fmt.Printf("\n%s, %s\n", appName, appDescription)
+	for _, el := range arr {
+		if el != "" {
+			fmt.Printf("%s\n", strings.TrimSpace(el))
+		}
+	}
 }
 
 func alnum(s string) string {
