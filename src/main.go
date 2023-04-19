@@ -16,7 +16,7 @@ func main() {
 
 	ft := coda.detect()
 
-	if CLI.Debug == true {
+	if CLI.Debug {
 		fmt.Printf("\n\n%s\n\n", "Used VarMap")
 		pprint(coda.VarMap)
 	}

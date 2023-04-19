@@ -21,11 +21,11 @@ var (
 )
 
 var CLI struct {
-	Filename    string `help:"file to process, positional arg required" arg optional`
-	Config      string `help:"configuration file" short:c default:${config}`
-	PrintVars   bool   `help:"print available vars" short:p`
-	Debug       bool   `help:"debug mode" short:d`
-	VersionFlag bool   `help:"display version" short:V`
+	Filename    string `help:"file to process, positional arg required" arg:"" optional:""`
+	Config      string `help:"configuration file" short:"c" default:"${config}"`
+	PrintVars   bool   `help:"print available vars" short:"p"`
+	Debug       bool   `help:"debug mode" short:"d"`
+	VersionFlag bool   `help:"display version" short:"V"`
 }
 
 func parseArgs() {
@@ -47,11 +47,11 @@ func parseArgs() {
 	)
 	_ = ctx.Run()
 
-	if CLI.VersionFlag == true {
+	if CLI.VersionFlag {
 		printBuildTags(BUILDTAGS)
 		os.Exit(0)
 	}
-	if CLI.PrintVars == true {
+	if CLI.PrintVars {
 		printAvailableVars()
 		os.Exit(0)
 	}
@@ -91,11 +91,11 @@ func printBuildTags(buildtags string) {
 	fmt.Printf("\n")
 }
 
-func alnum(s string) string {
-	s = strings.ToLower(s)
-	re := regexp.MustCompile("[^a-z0-9_-]")
-	return re.ReplaceAllString(s, "-")
-}
+// func alnum(s string) string {
+// 	s = strings.ToLower(s)
+// 	re := regexp.MustCompile("[^a-z0-9_-]")
+// 	return re.ReplaceAllString(s, "-")
+// }
 
 func getBindir() (s string) {
 	ex, err := os.Executable()

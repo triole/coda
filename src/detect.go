@@ -24,7 +24,7 @@ func (coda tCoda) detect() (ft tFileType) {
 
 func (coda tCoda) detectByRegex(filename string, filetype tFileType) (ft tFileType) {
 	rx := regexp.MustCompile(filetype.Regex)
-	if rx.MatchString(filename) == true {
+	if rx.MatchString(filename) {
 		ft = filetype
 	}
 	return

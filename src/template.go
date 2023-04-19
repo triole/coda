@@ -36,7 +36,7 @@ func makeVarMap(filename string) (varMap tVarMap) {
 	}
 	ext := ""
 	varMap["extension"] = tVarMapEntry{"", "file's extension"}
-	if strings.Contains(filename, ".") == true {
+	if strings.Contains(filename, ".") {
 		arr := strings.Split(filename, ".")
 		if len(arr)-1 > 0 {
 			ext = arr[len(arr)-1]
