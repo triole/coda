@@ -1,10 +1,11 @@
 # Coda ![build](https://github.com/triole/coda/actions/workflows/build.yaml/badge.svg)
 
-<!--- mdtoc: toc begin -->
+<!-- toc -->
 
-1. [Synopsis](#synopsis)
-2. [Configuration](#configuration)
-3. [How to use?](#how-to-use-)<!--- mdtoc: toc end -->
+- [Synopsis](#synopsis)
+- [Configuration](#configuration)
+
+<!-- /toc -->
 
 ## Synopsis
 
@@ -20,9 +21,9 @@ name = "python"
 regex = ".*\\.py$"
 shebang = "#!/usr/bin/python3"
 cmds = [
-    ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
-    ["isort", "{FILENAME}"],
-    ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
+  ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
+  ["isort", "{FILENAME}"],
+  ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
 ]
 ```
 
