@@ -10,17 +10,17 @@ import (
 )
 
 func (coda tCoda) execute(cmds [][]string) {
-	if CLI.Debug {
+	if CLI.DryRun {
 		fmt.Printf(
 			"\n\n%s\n", "Commands (1st template, 2nd what would have been run)",
 		)
 	}
 	for _, cmdArr := range cmds {
-		if CLI.Debug {
+		if CLI.DryRun {
 			fmt.Printf("\n%q\n", cmdArr)
 		}
 		cmdArr = coda.iterTemplate(cmdArr, coda.VarMap)
-		if CLI.Debug {
+		if CLI.DryRun {
 			fmt.Printf("%q\n", cmdArr)
 		} else {
 			coda.runCmd(cmdArr)

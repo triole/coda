@@ -4,6 +4,7 @@
 
 - [Synopsis](#synopsis)
 - [Configuration](#configuration)
+- [How to use?](#how-to-use)
 
 <!-- /toc -->
 
@@ -15,15 +16,23 @@
 
 All definitions are made in the `conf.toml`, which has to be in the same path as the executable binary. This is how a typical entry looks:
 
-```toml
-[[ft]]
-name = "python"
-regex = ".*\\.py$"
-shebang = "#!/usr/bin/python3"
+```go mdox-exec="cat examples/conf.toml"
+[[filetypes]]
+name = "bash"
+regex = ".*\\.sh$"
+shebang = "#!/bin/bash"
 cmds = [
-  ["autoflake", "--remove-all-unused-imports", "-i", "{FILENAME}"],
-  ["isort", "{FILENAME}"],
-  ["pytest", "-v", "{SHORTNAME_NO_EXT}_test.py"]
+    ["shfmt", "-w", "-i", "4", "{{.filename}}"],
+    ["shellcheck", "-e", "SC1090,SC2154", "{{.filename}}"],
+]
+
+[[filetypes]]
+name = "golang"
+regex = ".*\\.go$"
+cmds = [
+    ["goimports", "-w", "{{.filename}}"],
+    ["gofmt", "-w", "{{.filename}}"],
+    ["go", "test", "-v"]
 ]
 ```
 

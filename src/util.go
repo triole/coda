@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/user"
+	"path/filepath"
 )
 
 func pprint(v interface{}) {
@@ -15,7 +17,7 @@ func pprint(v interface{}) {
 func getFirstLineOfFile(filename string) (l string) {
 	f, err := os.Open(filename)
 	if err != nil {
-		fmt.Printf("Error reading file: %s\n", err)
+		fmt.Printf("error reading file %q\n", err)
 		os.Exit(1)
 	}
 	scanner := bufio.NewScanner(f)
@@ -24,4 +26,29 @@ func getFirstLineOfFile(filename string) (l string) {
 		break
 	}
 	return
+}
+
+func makeAbs(filename string) string {
+	filename, err := filepath.Abs(filename)
+	if err != nil {
+		fmt.Printf("can not assemble absolute filename %q\n", err)
+		os.Exit(1)
+	}
+	return filename
+}
+
+func isFile(filePath string) bool {
+	stat, err := os.Stat(makeAbs(filePath))
+	if !os.IsNotExist(err) && !stat.IsDir() {
+		return true
+	}
+	return false
+}
+
+func getHome() string {
+	usr, err := user.Current()
+	if err != nil {
+		fmt.Printf("unable to retrieve user's home folder")
+	}
+	return usr.HomeDir
 }

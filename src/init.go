@@ -3,23 +3,25 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/pelletier/go-toml"
+	"gopkg.in/yaml.v3"
 )
 
 type tCoda struct {
-	FileTypes     []tFileType `toml:"ft"`
-	Settings      tSettings   `toml:"settings"`
+	FileTypes     []tFileType `toml|yaml:"filetypes"`
+	Settings      tSettings   `toml|yaml:"settings"`
 	FileConfig    string
 	FileToProcess string
 	VarMap        tVarMap
 }
 
 type tFileType struct {
-	Name    string `toml:"name"`
-	Shebang string `toml:"shebang"`
-	Regex   string
-	Cmds    [][]string
+	Name    string     `toml|yaml:"name"`
+	Shebang string     `toml|yaml:"shebang"`
+	Regex   string     `toml|yaml:"regex"`
+	Cmds    [][]string `toml|yaml:"cmds"`
 }
 
 type tSettings struct {
@@ -29,17 +31,33 @@ type tSettings struct {
 func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 	coda.FileConfig = fileConfig
 	coda.FileToProcess = fileToProcess
-	if fileConfig != "" {
+	if coda.FileConfig != "" {
 		var err error
-		raw, err := os.ReadFile(fileConfig)
+		raw, err := os.ReadFile(coda.FileConfig)
 		if err != nil {
-			log.Fatalf("Error reading config %q, %q", fileConfig, err)
+			log.Fatalf("Error reading config %q, %q", coda.FileConfig, err)
 		}
-		err = toml.Unmarshal(raw, &coda)
+		ext := filepath.Ext(coda.FileConfig)
+		if ext == ".toml" {
+			err = toml.Unmarshal(raw, &coda)
+		}
+		if ext == ".yaml" {
+			err = yaml.Unmarshal(raw, &coda)
+		}
 		if err != nil {
-			log.Fatalf("Error unmarshal %q, %q", fileConfig, err)
+			log.Fatalf("unmarshal error %q, %q", coda.FileConfig, err)
 		}
 	}
 	coda.VarMap = makeVarMap(fileToProcess)
+	return
+}
+
+func returnFirstExistingFile(arr []string) (s string) {
+	for _, el := range arr {
+		if isFile(el) {
+			s = el
+			break
+		}
+	}
 	return
 }

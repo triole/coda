@@ -24,12 +24,13 @@ var CLI struct {
 	Filename    string `help:"file to process, positional arg required" arg:"" optional:""`
 	Config      string `help:"configuration file" short:"c" default:"${config}"`
 	PrintVars   bool   `help:"print available vars" short:"p"`
-	Debug       bool   `help:"debug mode" short:"d"`
+	DryRun      bool   `help:"dry run, just print don't do" short:"n"`
 	VersionFlag bool   `help:"display version" short:"V"`
 }
 
 func parseArgs() {
 	curdir, _ := os.Getwd()
+	homeFolder := getHome()
 	ctx := kong.Parse(&CLI,
 		kong.Name(appName),
 		kong.Description(appDescription),
@@ -42,7 +43,15 @@ func parseArgs() {
 		}),
 		kong.Vars{
 			"curdir": curdir,
-			"config": path.Join(getBindir(), appName+".toml"),
+			"config": returnFirstExistingFile(
+				[]string{
+					path.Join(getBindir(), appName+".toml"),
+					path.Join(homeFolder, ".conf", "coda", "conf.yaml"),
+					path.Join(homeFolder, ".conf", "coda", "conf.toml"),
+					path.Join(homeFolder, ".config", "coda", "conf.yaml"),
+					path.Join(homeFolder, ".config", "coda", "conf.toml"),
+				},
+			),
 		},
 	)
 	_ = ctx.Run()
