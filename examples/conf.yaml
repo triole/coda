@@ -1,0 +1,27 @@
+---
+filetypes:
+  - name: bash
+    regex: ".*\\.sh$"
+    shebang: "#!/bin/bash"
+    cmds:
+      - ["shellcheck", "-x", "-e", "SC1090,SC2154,SC2155", "{{.filename}}"]
+      - ["shfmt", "-w", "-ci", "-i", "2", "{{.filename}}"]
+
+  - name: golang
+    regex: ".*\\.go$"
+    cmds:
+      - ["goimports", "-w", "{{.filename}}"]
+      - ["gofmt", "-w", "{{.filename}}"]
+      - ["staticcheck", "{{.filename}}"]
+      - ["go", "test", "-v"]
+
+
+settings:
+  ignore_list:
+    - ".git/"
+    - ".pytest"
+    - "__pycache__"
+    - "/target/debug/"
+    - "/target/release/"
+    - ".lock$"
+    - ".rs.racertmp"

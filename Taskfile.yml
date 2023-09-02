@@ -2,7 +2,8 @@
 version: '3'
 
 vars:
-  SOURCE_FOLDER: src
+  CURDIR:
+    sh: pwd
   APP_NAME:
     sh: pwd | grep -Po "[^/]+$"
   SOURCE_DIR:
@@ -18,11 +19,18 @@ tasks:
       - task: test
       - task: build
 
+  prep:
+    desc: render config examples
+    cmds:
+      - cmd: dasel -f {{.CURDIR}}/examples/conf.yaml -r yaml -w
+          toml > {{.CURDIR}}/examples/conf.toml
+
   build:
     desc: build binary using remote ghwfe script, requires curl
     cmds:
+      - task: prep
       - cmd: |
-          export SOURCE_FOLDER={{.SOURCE_FOLDER}}
+          export SOURCE_FOLDER={{.SOURCE_DIR}}
           curl -sL https://raw.githubusercontent.com/triole/ghwfe/master/sh/go_build.sh | bash
 
   test:

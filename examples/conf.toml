@@ -1,0 +1,13 @@
+[[filetypes]]
+cmds = [['shellcheck', '-x', '-e', 'SC1090,SC2154,SC2155', '{{.filename}}'], ['shfmt', '-w', '-ci', '-i', '2', '{{.filename}}']]
+name = 'bash'
+regex = '.*\.sh$'
+shebang = '#!/bin/bash'
+
+[[filetypes]]
+cmds = [['goimports', '-w', '{{.filename}}'], ['gofmt', '-w', '{{.filename}}'], ['staticcheck', '{{.filename}}'], ['go', 'test', '-v']]
+name = 'golang'
+regex = '.*\.go$'
+
+[settings]
+ignore_list = ['.git/', '.pytest', '__pycache__', '/target/debug/', '/target/release/', '.lock$', '.rs.racertmp']

@@ -4,7 +4,9 @@
 
 - [Synopsis](#synopsis)
 - [Configuration](#configuration)
+- [```go mdox-exec=&quot;cat examples/conf.yaml&quot;](#go-mdox-execcat-examplesconfyaml)
 - [How to use?](#how-to-use)
+- [Help](#help)
 
 <!-- /toc -->
 
@@ -14,29 +16,45 @@
 
 ## Configuration
 
-All definitions are made in the `conf.toml`, which has to be in the same path as the executable binary. This is how a typical entry looks:
+Coda's config location can be set by using `-c`. If the flag is not provided coda tries to lookup the file's location. The following paths are tried in order. First match will be taken.
 
-```go mdox-exec="cat examples/conf.toml"
-[[filetypes]]
-name = "bash"
-regex = ".*\\.sh$"
-shebang = "#!/bin/bash"
-cmds = [
-    ["shfmt", "-w", "-i", "4", "{{.filename}}"],
-    ["shellcheck", "-e", "SC1090,SC2154", "{{.filename}}"],
-]
+- coda binary folder + "coda.toml"
+- ${HOME}/.conf/coda/conf.yaml
+- ${HOME}/.conf/coda/conf.toml
+- ${HOME}/.config/coda/conf.yaml
+- ${HOME}/.config/coda/conf.toml
 
-[[filetypes]]
-name = "golang"
-regex = ".*\\.go$"
-cmds = [
-    ["goimports", "-w", "{{.filename}}"],
-    ["gofmt", "-w", "{{.filename}}"],
-    ["go", "test", "-v"]
-]
+The configuration file can be toml or yaml and contains the filetype definitions and settings. A yaml example looks like this. Please look into [examples](https://github.com/triole/coda/blob/master/examples) for more information.
+
+```go mdox-exec="cat examples/conf.yaml"
+---
+filetypes:
+  - name: bash
+    regex: ".*\\.sh$"
+    shebang: "#!/bin/bash"
+    cmds:
+      - ["shellcheck", "-x", "-e", "SC1090,SC2154,SC2155", "{{.filename}}"]
+      - ["shfmt", "-w", "-ci", "-i", "2", "{{.filename}}"]
+
+  - name: golang
+    regex: ".*\\.go$"
+    cmds:
+      - ["goimports", "-w", "{{.filename}}"]
+      - ["gofmt", "-w", "{{.filename}}"]
+      - ["staticcheck", "{{.filename}}"]
+      - ["go", "test", "-v"]
+
+
+settings:
+  ignore_list:
+    - ".git/"
+    - ".pytest"
+    - "__pycache__"
+    - "/target/debug/"
+    - "/target/release/"
+    - ".lock$"
+    - ".rs.racertmp"
 ```
-
-The `conf` folder in the repository provides a [full example](https://github.com/triole/coda/blob/master/conf/coda.toml).
 
 As you can see the configuration is a list of entries. They function like this
 
@@ -72,4 +90,22 @@ coda main.rs
 
 # debug mode, to just print commands that would have been run
 coda -d shell_script
+```
+
+## Help
+
+```go mdox-exec="r -h"
+
+brings the music back to coding
+
+Arguments:
+  [<filename>]    file to process, positional arg required
+
+Flags:
+  -h, --help            Show context-sensitive help.
+  -c, --config="/home/ole/.conf/coda/conf.yaml"
+                        configuration file
+  -p, --print-vars      print available vars
+  -n, --dry-run         dry run, just print don't do
+  -V, --version-flag    display version
 ```
