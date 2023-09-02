@@ -1,8 +1,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/pelletier/go-toml"
 )
@@ -31,7 +31,7 @@ func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 	coda.FileToProcess = fileToProcess
 	if fileConfig != "" {
 		var err error
-		raw, err := ioutil.ReadFile(fileConfig)
+		raw, err := os.ReadFile(fileConfig)
 		if err != nil {
 			log.Fatalf("Error reading config %q, %q", fileConfig, err)
 		}
