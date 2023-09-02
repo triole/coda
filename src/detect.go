@@ -18,7 +18,6 @@ func (coda tCoda) detect() (ft tFileType) {
 			return
 		}
 	}
-
 	return
 }
 

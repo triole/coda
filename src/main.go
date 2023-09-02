@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/jedib0t/go-pretty/table"
 )
 
 func main() {
@@ -14,8 +16,21 @@ func main() {
 	ft := coda.detect()
 
 	if CLI.DryRun {
-		fmt.Printf("\n\n%s\n\n", "Used VarMap")
-		pprint(coda.VarMap)
+		fmt.Printf("\nvariables and their mapped values\n\n")
+		t := newTable()
+		t.AppendHeader(table.Row{
+			"variable", "value", "description",
+		})
+		for _, val := range orderedIterator(coda.VarMap) {
+			t.AppendRow(
+				[]interface{}{
+					val,
+					coda.VarMap[val].Variable,
+					coda.VarMap[val].Desc,
+				},
+			)
+		}
+		t.Render()
 	}
 	coda.execute(ft.Cmds)
 }

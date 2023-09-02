@@ -7,24 +7,34 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+
+	"github.com/jedib0t/go-pretty/table"
 )
 
 func (coda tCoda) execute(cmds [][]string) {
+	var t table.Writer
 	if CLI.DryRun {
-		fmt.Printf(
-			"\n\n%s\n", "Commands (1st template, 2nd what would have been run)",
-		)
+		t = newTable()
+		t.AppendHeader(table.Row{
+			"commands that would have been run",
+		})
 	}
 	for _, cmdArr := range cmds {
-		if CLI.DryRun {
-			fmt.Printf("\n%q\n", cmdArr)
-		}
 		cmdArr = coda.iterTemplate(cmdArr, coda.VarMap)
 		if CLI.DryRun {
-			fmt.Printf("%q\n", cmdArr)
+			t.AppendRow(
+				[]interface{}{
+					fmt.Sprintf("%q", cmdArr),
+				},
+			)
 		} else {
 			coda.runCmd(cmdArr)
 		}
+	}
+
+	if CLI.DryRun {
+		fmt.Printf("\n")
+		t.Render()
 	}
 }
 

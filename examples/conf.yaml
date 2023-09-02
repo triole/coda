@@ -1,4 +1,3 @@
----
 filetypes:
   - name: bash
     regex: ".*\\.sh$"

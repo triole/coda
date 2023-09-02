@@ -25,7 +25,7 @@ Coda's config location can be set by using `-c`. If the flag is not provided cod
 
 The configuration file can be toml or yaml and contains the filetype definitions and settings. A yaml example looks like this. Please look into [examples](https://github.com/triole/coda/blob/master/examples) for more information.
 
-```go mdox-exec="tail -n +2 examples/conf.yaml"
+```go mdox-exec="tail -n +1 examples/conf.yaml"
 filetypes:
   - name: bash
     regex: ".*\\.sh$"
@@ -68,7 +68,7 @@ There is a set of variables that can be used inside a config. They get replaced 
 
 Available variables
 
- VARIABLE              | DESCRIPTION                                 
+ variable              | description                                 
 -----------------------+---------------------------------------------
  {{.extension}}        | file's extension                            
  {{.filename}}         | full file name                              
@@ -96,7 +96,7 @@ coda -d shell_script
 brings the music back to coding
 
 Arguments:
-  [<filename>]    file to process, positional arg required
+  [<filename>]    file to process, required positional arg
 
 Flags:
   -h, --help            Show context-sensitive help.

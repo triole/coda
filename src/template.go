@@ -9,7 +9,6 @@ import (
 	"text/template"
 
 	"github.com/jedib0t/go-pretty/table"
-	"github.com/jedib0t/go-pretty/text"
 )
 
 type tVarMap map[string]tVarMapEntry
@@ -62,7 +61,8 @@ func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
 		tempMap[key] = val.VarString()
 	}
 	for _, el := range arr {
-		r = append(r, coda.execTemplate(el, tempMap))
+		r = append(r, os.ExpandEnv(coda.execTemplate(el, tempMap)))
+
 	}
 	return
 }
@@ -80,43 +80,23 @@ func (coda tCoda) execTemplate(tplStr string, varMap map[string]interface{}) str
 	return buf.String()
 }
 
-func printAvailableVars() {
-	vm := makeVarMap("")
-	var iterator []string
+func orderedIterator(vm tVarMap) (iterator []string) {
 	for el := range vm {
 		iterator = append(iterator, el)
 	}
 	sort.Strings(iterator)
+	return
+}
 
+func printAvailableVars() {
 	fmt.Printf("\nAvailable variables\n\n")
-	t := table.NewWriter()
 
-	t.SetStyle(table.Style{
-		Name: "myNewStyle",
-		Box: table.BoxStyle{
-			MiddleHorizontal: "-",
-			MiddleSeparator:  "+",
-			MiddleVertical:   "|",
-			PaddingLeft:      " ",
-			PaddingRight:     " ",
-		},
-		Format: table.FormatOptions{
-			Header: text.FormatUpper,
-		},
-		Options: table.Options{
-			DrawBorder:      false,
-			SeparateColumns: true,
-			SeparateFooter:  true,
-			SeparateHeader:  true,
-			SeparateRows:    false,
-		},
-	})
-
-	t.SetOutputMirror(os.Stdout)
+	vm := makeVarMap("")
+	t := newTable()
 	t.AppendHeader(table.Row{
 		"variable", "description",
 	})
-	for _, val := range iterator {
+	for _, val := range orderedIterator(vm) {
 		t.AppendRow(
 			[]interface{}{
 				"{{." + val + "}}",

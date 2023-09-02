@@ -2,17 +2,14 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
-)
 
-func pprint(v interface{}) {
-	b, _ := json.MarshalIndent(v, "", "  ")
-	println(string(b))
-}
+	"github.com/jedib0t/go-pretty/table"
+	"github.com/jedib0t/go-pretty/text"
+)
 
 func getFirstLineOfFile(filename string) (l string) {
 	f, err := os.Open(filename)
@@ -51,4 +48,32 @@ func getHome() string {
 		fmt.Printf("unable to retrieve user's home folder")
 	}
 	return usr.HomeDir
+}
+
+func newTable() table.Writer {
+	t := table.NewWriter()
+
+	t.SetStyle(table.Style{
+		Name: "myNewStyle",
+		Box: table.BoxStyle{
+			MiddleHorizontal: "-",
+			MiddleSeparator:  "+",
+			MiddleVertical:   "|",
+			PaddingLeft:      " ",
+			PaddingRight:     " ",
+		},
+		Format: table.FormatOptions{
+			Header: text.FormatLower,
+		},
+		Options: table.Options{
+			DrawBorder:      false,
+			SeparateColumns: true,
+			SeparateFooter:  true,
+			SeparateHeader:  true,
+			SeparateRows:    false,
+		},
+	})
+
+	t.SetOutputMirror(os.Stdout)
+	return t
 }
