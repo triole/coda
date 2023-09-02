@@ -35,6 +35,7 @@ func (coda tCoda) execute(cmds [][]string) {
 	if CLI.DryRun {
 		fmt.Printf("\n")
 		t.Render()
+		fmt.Printf("\n")
 	}
 }
 
