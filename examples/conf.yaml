@@ -15,7 +15,6 @@ filetypes:
       - ["staticcheck", "{{.filename}}"]
       - ["go", "test", "-v"]
 
-
 settings:
   ignore_list:
     - ".git/"

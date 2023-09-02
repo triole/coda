@@ -4,7 +4,6 @@
 
 - [Synopsis](#synopsis)
 - [Configuration](#configuration)
-- [```go mdox-exec=&quot;cat examples/conf.yaml&quot;](#go-mdox-execcat-examplesconfyaml)
 - [How to use?](#how-to-use)
 - [Help](#help)
 
@@ -26,8 +25,7 @@ Coda's config location can be set by using `-c`. If the flag is not provided cod
 
 The configuration file can be toml or yaml and contains the filetype definitions and settings. A yaml example looks like this. Please look into [examples](https://github.com/triole/coda/blob/master/examples) for more information.
 
-```go mdox-exec="cat examples/conf.yaml"
----
+```go mdox-exec="tail -n +2 examples/conf.yaml"
 filetypes:
   - name: bash
     regex: ".*\\.sh$"
@@ -43,7 +41,6 @@ filetypes:
       - ["gofmt", "-w", "{{.filename}}"]
       - ["staticcheck", "{{.filename}}"]
       - ["go", "test", "-v"]
-
 
 settings:
   ignore_list:
