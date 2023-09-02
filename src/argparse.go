@@ -21,7 +21,7 @@ var (
 )
 
 var CLI struct {
-	Filename    string `help:"file to process, positional arg required" arg:"" optional:""`
+	Filename    string `help:"file to process, required positional arg" arg:"" optional:""`
 	Config      string `help:"configuration file" short:"c" default:"${config}"`
 	PrintVars   bool   `help:"print available vars" short:"p"`
 	DryRun      bool   `help:"dry run, just print don't do" short:"n"`
