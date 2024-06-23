@@ -1,0 +1,52 @@
+---
+filetypes:
+  - name: bash
+    regex: ".*\\.sh$"
+    shebang: "#!/bin/bash"
+    cmds:
+      - ["shellcheck", "-x", "-e", "SC1090,SC2154,SC2155", "{{.filename}}"]
+      - ["shfmt", "-w", "-ci", "-i", "2", "{{.filename}}"]
+
+  - name: caddyfile
+    regex: ".*\\.?(C|c)addyfile$"
+    cmds:
+      - ["caddy", "fmt", "--overwrite", "{{.filename}}"]
+
+  - name: golang
+    regex: ".*\\.go$"
+    cmds:
+      - ["goimports", "-w", "{{.filename}}"]
+      - ["gofmt", "-w", "{{.filename}}"]
+      - ["staticcheck", "{{.filename}}"]
+      - ["go", "test", "-v"]
+
+  - name: python
+    regex: ".*\\.py$"
+    shebang: "#!/usr/bin/python3"
+    cmds:
+      - ["autoflake", "--remove-all-unused-imports", "-i", "{{.filename}}"]
+      - ["isort", "{{.filename}}"]
+      - ["black", "{{.filename}}"]
+
+  - name: rust
+    regex: ".*\\.rs$"
+    cmds:
+      - ["rustfmt", "{{.filename}}"]
+      - ["cargo", "test", "--color", "always"]
+
+  - name: yaml
+    regex: ".*\\.(yml|yaml)$"
+    cmds:
+      - ["keep-sorted", "{{.filename}}"]
+      - ["yamlfmt", "-conf", "${HOME}/tools/shed/yamlfmt.yaml",
+        "{{.filename}}"]
+
+settings:
+  ignore_list:
+    - ".git/"
+    - ".pytest"
+    - "__pycache__"
+    - "/target/debug/"
+    - "/target/release/"
+    - ".lock$"
+    - ".rs.racertmp"
