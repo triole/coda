@@ -15,7 +15,7 @@ filetypes:
       - ["staticcheck", "{{.filename}}"]
       - ["go", "test", "-v"]
 
-- name: zone
+  - name: zone
     regex: ".*\\.(zone)$"
     cmds:
       - ["dnsfmt", "{{.filename}}"]
