@@ -5,14 +5,20 @@ on:
   push:
     tags:
       - '*'
-  workflow_dispatch:
 
 jobs:
-  build:
+  test:
+    uses: ./.github/workflows/test.yaml
+    permissions: write-all
+  release:
+    needs:
+      - test
+    name: make release
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Make github config
@@ -33,7 +39,7 @@ jobs:
         env:
           GOROOT: /home/runner/.local/go
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # APP_NAME: binary_name
+          # APP_NAME: none
           SOURCE_FOLDER: src
           # TARGET_FOLDER: build
         run: curl -sL https://raw.githubusercontent.com/triole/ghwfe/master/sh/go_build.sh
