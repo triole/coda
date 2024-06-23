@@ -42,12 +42,11 @@ func getFiles(p string) (files []string) {
 		if !info.IsDir() {
 			files = append(files, path)
 		}
-
 		return nil
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("[coda] error: ", err)
 	}
 	sort.Strings(files)
 	return

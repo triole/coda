@@ -32,5 +32,8 @@ func main() {
 		}
 		t.Render()
 	}
-	coda.execute(ft.Cmds)
+	stdout, exitcode, err := coda.execute(ft.Cmds)
+	if err == nil && exitcode == 0 && ft.WriteStdoutTo != "" && !CLI.DryRun {
+		coda.SaveFile(stdout, ft.WriteStdoutTo)
+	}
 }

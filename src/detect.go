@@ -4,6 +4,14 @@ import (
 	"regexp"
 )
 
+type tFileType struct {
+	Name          string     `yaml:"name"`
+	Shebang       string     `yaml:"shebang"`
+	Regex         string     `yaml:"regex"`
+	Cmds          [][]string `yaml:"cmds"`
+	WriteStdoutTo string     `yaml:"write_stdout_to"`
+}
+
 func (coda tCoda) detect() (ft tFileType) {
 	for _, filetype := range coda.FileTypes {
 		ft = coda.detectByRegex(coda.FileToProcess, filetype)

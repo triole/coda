@@ -54,15 +54,18 @@ func makeVarMap(filename string) (varMap tVarMap) {
 	}
 	return
 }
-
-func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
-	tempMap := make(map[string]interface{})
+func (coda tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
+	tempMap = make(map[string]interface{})
 	for key, val := range varMap {
 		tempMap[key] = val.VarString()
 	}
+	return
+}
+
+func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
+	tempMap := coda.makeTempMap(varMap)
 	for _, el := range arr {
 		r = append(r, os.ExpandEnv(coda.execTemplate(el, tempMap)))
-
 	}
 	return
 }
@@ -71,7 +74,6 @@ func (coda tCoda) execTemplate(tplStr string, varMap map[string]interface{}) str
 	tmpl := template.Must(
 		template.New("new.tmpl").Parse(tplStr),
 	)
-
 	buf := &bytes.Buffer{}
 	err := tmpl.Execute(buf, varMap)
 	if err != nil {

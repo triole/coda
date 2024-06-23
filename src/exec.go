@@ -11,7 +11,7 @@ import (
 	"github.com/jedib0t/go-pretty/table"
 )
 
-func (coda tCoda) execute(cmds [][]string) {
+func (coda tCoda) execute(cmds [][]string) (output []byte, exitcode int, err error) {
 	var t table.Writer
 	if CLI.DryRun {
 		t = newTable()
@@ -28,7 +28,7 @@ func (coda tCoda) execute(cmds [][]string) {
 				},
 			)
 		} else {
-			coda.runCmd(cmdArr)
+			output, exitcode, err = coda.runCmd(cmdArr)
 		}
 	}
 
@@ -37,6 +37,7 @@ func (coda tCoda) execute(cmds [][]string) {
 		t.Render()
 		fmt.Printf("\n")
 	}
+	return output, exitcode, err
 }
 
 func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
@@ -61,6 +62,5 @@ func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	if err != nil {
 		fmt.Printf("An error occured: %s\n", err)
 	}
-	fmt.Printf("")
 	return stdBuffer.Bytes(), exitcode, err
 }
