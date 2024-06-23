@@ -46,7 +46,7 @@ filetypes:
     regex: ".*\\.(zone)$"
     cmds:
       - ["dnsfmt", "{{.filename}}"]
-    write_stdout_to: "/asdasd/{{.filename}}"
+    write_stdout_to: "{{.filename}}"
 
 settings:
   ignore_list:
