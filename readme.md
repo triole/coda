@@ -25,7 +25,7 @@ Coda's config location can be set by using `-c`. If the flag is not provided cod
 
 The configuration file can be toml or yaml and contains the filetype definitions and settings. A yaml example looks like this. Please look into [examples](https://github.com/triole/coda/blob/master/examples) for more information.
 
-```go mdox-exec="tail -n +1 examples/conf.yaml"
+```go mdox-exec="tail -n +2 examples/conf.yaml"
 filetypes:
   - name: bash
     regex: ".*\\.sh$"
@@ -42,6 +42,12 @@ filetypes:
       - ["staticcheck", "{{.filename}}"]
       - ["go", "test", "-v"]
 
+  - name: zone
+    regex: ".*\\.(zone)$"
+    cmds:
+      - ["dnsfmt", "{{.filename}}"]
+    write_stdout_to: "/asdasd/{{.filename}}"
+
 settings:
   ignore_list:
     - ".git/"
@@ -55,12 +61,13 @@ settings:
 
 As you can see the configuration is a list of entries. They function like this
 
-| entry   | function                                                          |
-|---------|-------------------------------------------------------------------|
-| name    | only test relevant, provides a clearer output of the test results |
-| regex   | 1st method file type detection                                    |
-| shebang | 2nd method file type detection                                    |
-| cmds    | list of commands to run                                           |
+| entry          | function                                                          |
+|----------------|-------------------------------------------------------------------|
+| name           | only test relevant, provides a clearer output of the test results |
+| regex          | 1st method file type detection                                    |
+| shebang        | 2nd method file type detection                                    |
+| cmds           | list of commands to run                                           |
+| save_stdout_to | if no error occured on execution, save command stdout to file     |
 
 There is a set of variables that can be used inside a config. They get replaced by their appropriate values. This is what they look like:
 
