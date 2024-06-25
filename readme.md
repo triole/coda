@@ -1,4 +1,4 @@
-# Coda ![build](https://github.com/triole/coda/actions/workflows/build.yaml/badge.svg) ![example workflow](https://github.com/triole/coda/actions/workflows/test.yaml/badge.svg)
+# Coda ![build](https://github.com/triole/coda/actions/workflows/build.yaml/badge.svg) ![test](https://github.com/triole/coda/actions/workflows/test.yaml/badge.svg)
 
 <!-- toc -->
 
