@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"log"
+
 	"github.com/jedib0t/go-pretty/table"
 )
 
@@ -34,6 +36,11 @@ func main() {
 	}
 	stdout, exitcode, err := coda.execute(ft.Cmds)
 	if err == nil && exitcode == 0 && ft.WriteStdoutTo != "" && !CLI.DryRun {
-		coda.SaveFile(stdout, ft.WriteStdoutTo)
+		fmt.Printf("%+v\n", stdout)
+		if len(stdout) > 1 {
+			coda.SaveFile(stdout, ft.WriteStdoutTo)
+		} else {
+			log.Printf("[coda] stdout is empty, did not write to: %q", coda.FileToProcess)
+		}
 	}
 }
