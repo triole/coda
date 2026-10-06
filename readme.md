@@ -42,6 +42,7 @@ filetypes:
 
   - name: zone
     regex: ".*\\.(zone)$"
+    regex_ignore: "nolint.zone"
     cmds:
       - ["dnsfmt", "{{.filename}}"]
     write_stdout_to: "{{.filename}}"
@@ -73,13 +74,14 @@ There is a set of variables that can be used inside a config. They get replaced 
 
 Available variables
 
- variable              | description
+ variable              | description                                 
 -----------------------+---------------------------------------------
- {{.extension}}        | file's extension
- {{.filename}}         | full file name
- {{.filename_no_ext}}  | full file name without preceeding extension
- {{.shortname}}        | short name, file name without path
- {{.shortname_no_ext}} | short name without extension
+ {{.extension}}        | file's extension                            
+ {{.filename}}         | full file name                              
+ {{.filename_no_ext}}  | full file name without preceeding extension 
+ {{.folder}}           | folder of file                              
+ {{.shortname}}        | short name, file name without path          
+ {{.shortname_no_ext}} | short name without extension                
 
 ```
 
