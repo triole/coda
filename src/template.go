@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
+	"path"
 	"sort"
 	"strings"
 	"text/template"
@@ -27,20 +29,22 @@ func (vme tVarMapEntry) VarString() string {
 	}
 }
 
+func pprint(i interface{}) {
+	s, _ := json.MarshalIndent(i, "", "  ")
+	fmt.Println(string(s))
+}
+
 func makeVarMap(filename string) (varMap tVarMap) {
 	varMap = make(tVarMap)
+	varMap["folder"] = tVarMapEntry{
+		path.Dir(filename), "folder of file",
+	}
 	varMap["filename"] = tVarMapEntry{filename, "full file name"}
 	varMap["shortname"] = tVarMapEntry{
-		find(`[^/]+$`, filename), "short name, file name without path",
+		path.Base(filename), "short name, file name without path",
 	}
-	ext := ""
-	varMap["extension"] = tVarMapEntry{"", "file's extension"}
-	if strings.Contains(filename, ".") {
-		arr := strings.Split(filename, ".")
-		if len(arr)-1 > 0 {
-			ext = arr[len(arr)-1]
-		}
-		varMap["extension"] = tVarMapEntry{ext, "extension of file"}
+	varMap["extension"] = tVarMapEntry{
+		path.Ext(filename)[1:], "file's extension",
 	}
 	varMap["filename_no_ext"] = tVarMapEntry{
 		strings.Replace(
@@ -52,6 +56,8 @@ func makeVarMap(filename string) (varMap tVarMap) {
 			varMap["shortname"].VarString(), "."+varMap["ext"].VarString(), "", -1,
 		), "short name without extension",
 	}
+	pprint(varMap)
+	os.Exit(0)
 	return
 }
 func (coda tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
