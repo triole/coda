@@ -16,7 +16,6 @@ func main() {
 
 	coda := initCoda(fileConfig, fileToProcess)
 	ft := coda.detect()
-	fmt.Printf("%+v\n", ft)
 	if CLI.DryRun {
 		fmt.Printf("\nvariables and their mapped values\n\n")
 		t := newTable()
