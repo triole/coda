@@ -56,8 +56,6 @@ func makeVarMap(filename string) (varMap tVarMap) {
 			varMap["shortname"].VarString(), "."+varMap["ext"].VarString(), "", -1,
 		), "short name without extension",
 	}
-	pprint(varMap)
-	os.Exit(0)
 	return
 }
 func (coda tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
