@@ -17,6 +17,7 @@ filetypes:
 
   - name: zone
     regex: ".*\\.(zone)$"
+    regex_ignore: "nolint.zone"
     cmds:
       - ["dnsfmt", "{{.filename}}"]
     write_stdout_to: "{{.filename}}"
