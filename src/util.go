@@ -22,6 +22,10 @@ func getFirstLineOfFile(filename string) (l string) {
 		l = scanner.Text()
 		break
 	}
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("error scanning file %q\n", err)
+		os.Exit(1)
+	}
 	return
 }
 
