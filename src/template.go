@@ -54,7 +54,7 @@ func makeVarMap(filename string) (varMap tVarMap) {
 	}
 	varMap["shortname_no_ext"] = tVarMapEntry{
 		strings.ReplaceAll(
-			varMap["shortname"].VarString(), "."+varMap["ext"].VarString(), "",
+			varMap["shortname"].VarString(), "."+varMap["extension"].VarString(), "",
 		), "short name without extension",
 	}
 	return
@@ -76,13 +76,14 @@ func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
 }
 
 func (coda tCoda) execTemplate(tplStr string, varMap map[string]interface{}) string {
-	tmpl := template.Must(
-		template.New("new.tmpl").Parse(tplStr),
-	)
-	buf := &bytes.Buffer{}
-	err := tmpl.Execute(buf, varMap)
+	tmpl, err := template.New("new.tmpl").Parse(tplStr)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("template parse error: %w", err))
+	}
+	buf := &bytes.Buffer{}
+	err = tmpl.Execute(buf, varMap)
+	if err != nil {
+		panic(fmt.Errorf("template execution error: %w", err))
 	}
 	return buf.String()
 }
