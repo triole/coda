@@ -15,7 +15,7 @@ type tFileType struct {
 	compiledRegexIgnore *regexp.Regexp
 }
 
-// pre compile regexes improving performance
+// pre-compile regexes improving performance
 func compileRegexes(filetypes *[]tFileType) {
 	for i := range *filetypes {
 		ft := &(*filetypes)[i]
