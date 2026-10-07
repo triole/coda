@@ -53,8 +53,8 @@ func makeVarMap(filename string) (varMap tVarMap) {
 		), "full file name without preceeding extension",
 	}
 	varMap["shortname_no_ext"] = tVarMapEntry{
-		strings.Replace(
-			varMap["shortname"].VarString(), "."+varMap["ext"].VarString(), "", -1,
+		strings.ReplaceAll(
+			varMap["shortname"].VarString(), "."+varMap["ext"].VarString(), "",
 		), "short name without extension",
 	}
 	return
