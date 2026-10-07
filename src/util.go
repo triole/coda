@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -14,7 +13,7 @@ import (
 func getFirstLineOfFile(filename string) (l string) {
 	f, err := os.Open(filename)
 	if err != nil {
-		fmt.Printf("error reading file %q\n", err)
+		logger.Error("error reading file %q: %v", filename, err)
 		os.Exit(1)
 	}
 	scanner := bufio.NewScanner(f)
@@ -23,7 +22,7 @@ func getFirstLineOfFile(filename string) (l string) {
 		break
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("error scanning file %q\n", err)
+		logger.Error("error scanning file %q: %v", filename, err)
 		os.Exit(1)
 	}
 	return
@@ -32,7 +31,7 @@ func getFirstLineOfFile(filename string) (l string) {
 func makeAbs(filename string) string {
 	filename, err := filepath.Abs(filename)
 	if err != nil {
-		fmt.Printf("can not assemble absolute filename %q\n", err)
+		logger.Fatal("can not assemble absolute filename %q\n", err)
 		os.Exit(1)
 	}
 	return filename
@@ -49,7 +48,7 @@ func isFile(filePath string) bool {
 func getHome() string {
 	usr, err := user.Current()
 	if err != nil {
-		fmt.Printf("unable to retrieve user's home folder")
+		logger.Error("unable to determine current user: %q", err)
 	}
 	return usr.HomeDir
 }

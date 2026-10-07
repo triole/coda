@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -29,13 +27,12 @@ func TestDetect(t *testing.T) {
 func getFiles(p string) (files []string) {
 	root, err := filepath.Abs(p)
 	if err != nil {
-		fmt.Printf("can not make absolute file path: %s\n", err)
-		os.Exit(1)
+		logger.Fatal("can not make absolute file path: %s\n", err)
 	}
 	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 
 		if err != nil {
-			fmt.Printf("can not walk over files: %s\n", err)
+			logger.Error("can not walk over files: %s\n", err)
 			return nil
 		}
 
@@ -46,7 +43,7 @@ func getFiles(p string) (files []string) {
 	})
 
 	if err != nil {
-		log.Fatal("[coda] error: ", err)
+		logger.Fatal("an error occured: ", err)
 	}
 	sort.Strings(files)
 	return
