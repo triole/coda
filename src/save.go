@@ -12,7 +12,7 @@ func (coda tCoda) SaveFile(data []byte, targetPath string) (err error) {
 
 	fmt.Printf("[coda] save file %q\n", tPath)
 	file, err := os.OpenFile(
-		tPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666,
+		tPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0640,
 	)
 	if err != nil {
 		log.Fatal("[coda] can not open file: ", err)
