@@ -33,7 +33,6 @@ func compileRegexes(filetypes *[]tFileType) {
 }
 
 func (coda tCoda) detect() (ft tFileType) {
-	compileRegexes(&coda.FileTypes)
 	for _, filetype := range coda.FileTypes {
 		ft = coda.detectByRegex(coda.FileToProcess, filetype)
 		if ft.Name != "" {

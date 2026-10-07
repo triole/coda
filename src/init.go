@@ -34,6 +34,7 @@ func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 		}
 	}
 	coda.VarMap = makeVarMap(fileToProcess)
+	compileRegexes(&coda.FileTypes)
 	return
 }
 
