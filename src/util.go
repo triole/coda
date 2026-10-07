@@ -29,7 +29,7 @@ func getFirstLineOfFile(filename string) (l string) {
 func makeAbs(filename string) string {
 	filename, err := filepath.Abs(filename)
 	if err != nil {
-		logger.Fatal("can not assemble absolute filename %q\n", err)
+		logger.Fatal("can not assemble absolute filename %q", err)
 	}
 	return filename
 }
@@ -45,7 +45,7 @@ func isFile(filePath string) bool {
 func getHome() string {
 	usr, err := user.Current()
 	if err != nil {
-		logger.Error("unable to determine current user: %q", err)
+		logger.Fatal("unable to determine current user %q", err)
 	}
 	return usr.HomeDir
 }

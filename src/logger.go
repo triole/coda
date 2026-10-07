@@ -29,6 +29,8 @@ var logger = &Logger{
 
 func (l *Logger) Debug(format string, args ...interface{}) {
 	if l.level <= LevelDebug {
+		l.mu.Lock()
+		defer l.mu.Unlock()
 		l.logger.Printf("[DEBUG] "+format+"\n", args...)
 	}
 }
