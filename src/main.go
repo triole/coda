@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 
-	"log"
-
 	"github.com/jedib0t/go-pretty/table"
 )
 
@@ -39,7 +37,7 @@ func main() {
 		if len(stdout) > 1 {
 			coda.SaveFile(stdout, ft.WriteStdoutTo)
 		} else {
-			log.Printf("[coda] stdout is empty, did not write to: %q", coda.FileToProcess)
+			logger.Warn("stdout is empty, did not write: %q", coda.FileToProcess)
 		}
 	}
 }

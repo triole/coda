@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	yaml "gopkg.in/yaml.v3"
@@ -26,11 +25,11 @@ func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 		var err error
 		raw, err := os.ReadFile(coda.FileConfig)
 		if err != nil {
-			log.Fatalf("[coda] error reading config %q, %q", coda.FileConfig, err)
+			logger.Fatal("error reading config %q, %q", coda.FileConfig, err)
 		}
 		err = yaml.Unmarshal(raw, &coda)
 		if err != nil {
-			log.Fatalf("[coda] unmarshal error %q, %q", coda.FileConfig, err)
+			logger.Fatal("unmarshal error %q, %q", coda.FileConfig, err)
 		}
 	}
 	coda.VarMap = makeVarMap(fileToProcess)

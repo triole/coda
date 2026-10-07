@@ -13,8 +13,7 @@ import (
 func getFirstLineOfFile(filename string) (l string) {
 	f, err := os.Open(filename)
 	if err != nil {
-		logger.Error("error reading file %q: %v", filename, err)
-		os.Exit(1)
+		logger.Fatal("error reading file %q: %v", filename, err)
 	}
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -22,8 +21,7 @@ func getFirstLineOfFile(filename string) (l string) {
 		break
 	}
 	if err := scanner.Err(); err != nil {
-		logger.Error("error scanning file %q: %v", filename, err)
-		os.Exit(1)
+		logger.Fatal("error scanning file %q: %v", filename, err)
 	}
 	return
 }
@@ -32,7 +30,6 @@ func makeAbs(filename string) string {
 	filename, err := filepath.Abs(filename)
 	if err != nil {
 		logger.Fatal("can not assemble absolute filename %q\n", err)
-		os.Exit(1)
 	}
 	return filename
 }
