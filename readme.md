@@ -74,14 +74,14 @@ There is a set of variables that can be used inside a config. They get replaced 
 
 Available variables
 
- variable              | description                                 
------------------------+---------------------------------------------
- {{.extension}}        | file's extension                            
- {{.filename}}         | full file name                              
- {{.filename_no_ext}}  | full file name without preceeding extension 
- {{.folder}}           | folder of file                              
- {{.shortname}}        | short name, file name without path          
- {{.shortname_no_ext}} | short name without extension                
+ variable              | description                                
+-----------------------+--------------------------------------------
+ {{.extension}}        | file's extension                           
+ {{.filename}}         | full file name                             
+ {{.filename_no_ext}}  | full file name without preceding extension 
+ {{.folder}}           | folder of file                             
+ {{.shortname}}        | short name, file name without path         
+ {{.shortname_no_ext}} | short name without extension               
 
 ```
 

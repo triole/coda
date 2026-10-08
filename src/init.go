@@ -2,16 +2,20 @@ package main
 
 import (
 	"os"
+	"sync"
+	"text/template"
 
 	yaml "gopkg.in/yaml.v3"
 )
 
 type tCoda struct {
-	FileTypes     []tFileType `yaml:"filetypes"`
-	Settings      tSettings   `yaml:"settings"`
+	FileTypes     []tFileType          `yaml:"filetypes"`
+	Settings      tSettings            `yaml:"settings"`
 	FileConfig    string
 	FileToProcess string
 	VarMap        tVarMap
+	tmplCache     map[string]*template.Template
+	cacheMu       sync.RWMutex
 }
 
 type tSettings struct {
@@ -21,6 +25,7 @@ type tSettings struct {
 func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 	coda.FileConfig = fileConfig
 	coda.FileToProcess = fileToProcess
+	coda.tmplCache = make(map[string]*template.Template, 8)
 	if coda.FileConfig != "" {
 		var err error
 		raw, err := os.ReadFile(coda.FileConfig)
