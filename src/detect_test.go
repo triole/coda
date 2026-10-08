@@ -9,7 +9,7 @@ import (
 )
 
 func TestDetect(t *testing.T) {
-	files := getFiles("../testdata")
+	files := getFiles("../testdata", t)
 	for _, filename := range files {
 		parentDir := filepath.Dir(filename)
 		expectedName := strings.TrimSuffix(filepath.Base(parentDir), "/")
@@ -24,15 +24,15 @@ func TestDetect(t *testing.T) {
 	}
 }
 
-func getFiles(p string) (files []string) {
+func getFiles(p string, t *testing.T) (files []string) {
 	root, err := filepath.Abs(p)
 	if err != nil {
-		logger.Fatal("can not make absolute file path: %s\n", err)
+		t.Fatalf("can not make absolute file path: %v", err)
 	}
 	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 
 		if err != nil {
-			logger.Error("can not walk over files: %s\n", err)
+			t.Errorf("can not walk over files: %v", err)
 			return nil
 		}
 
@@ -43,7 +43,7 @@ func getFiles(p string) (files []string) {
 	})
 
 	if err != nil {
-		logger.Fatal("an error occured: ", err)
+		t.Fatalf("an error occurred: %v", err)
 	}
 	sort.Strings(files)
 	return
