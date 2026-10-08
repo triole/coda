@@ -4,15 +4,15 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"testing"
 )
 
 func TestDetect(t *testing.T) {
 	files := getFiles("../testdata")
 	for _, filename := range files {
-		expectedName := find(`[^/]+/[^/]+$`, filename)
-		expectedName = find(`^.*?/`, expectedName)
-		expectedName = expectedName[0 : len(expectedName)-1]
+		parentDir := filepath.Dir(filename)
+		expectedName := strings.TrimSuffix(filepath.Base(parentDir), "/")
 		coda := initCoda("../testdata/yaml/conf.yaml", filename)
 		ft := coda.detect()
 		if expectedName != ft.Name {
