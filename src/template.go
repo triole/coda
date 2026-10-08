@@ -64,7 +64,7 @@ func makeVarMap(filename string) (varMap tVarMap) {
 	}
 	return
 }
-func (coda tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
+func (coda *tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
 	// Pre-compute map size for efficiency
 	tempMap = make(map[string]interface{}, len(varMap))
 	for key, val := range varMap {
@@ -73,7 +73,7 @@ func (coda tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) {
 	return
 }
 
-func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
+func (coda *tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
 	// Pre-allocate result slice to avoid reallocations
 	r = make([]string, len(arr))
 	tempMap := coda.makeTempMap(varMap)
@@ -83,7 +83,7 @@ func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
 	return
 }
 
-func (coda tCoda) execTemplate(tplStr string, varMap map[string]interface{}) string {
+func (coda *tCoda) execTemplate(tplStr string, varMap map[string]interface{}) string {
 	// Check cache first (read lock for concurrency)
 	coda.cacheMu.RLock()
 	tmpl, cached := coda.tmplCache[tplStr]

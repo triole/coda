@@ -32,7 +32,7 @@ func compileRegexes(filetypes *[]tFileType) {
 	}
 }
 
-func (coda tCoda) detect() (ft tFileType) {
+func (coda *tCoda) detect() (ft tFileType) {
 	for _, filetype := range coda.FileTypes {
 		ft = coda.detectByRegex(coda.FileToProcess, filetype)
 		if ft.Name != "" {
@@ -49,7 +49,7 @@ func (coda tCoda) detect() (ft tFileType) {
 	return
 }
 
-func (coda tCoda) detectByRegex(filename string, filetype tFileType) (ft tFileType) {
+func (coda *tCoda) detectByRegex(filename string, filetype tFileType) (ft tFileType) {
 	if filetype.compiledRegexIgnore != nil {
 		if filetype.compiledRegexIgnore.MatchString(filename) {
 			return tFileType{}
@@ -61,7 +61,7 @@ func (coda tCoda) detectByRegex(filename string, filetype tFileType) (ft tFileTy
 	return
 }
 
-func (coda tCoda) detectByShebang(filename string, filetype tFileType) (ft tFileType) {
+func (coda *tCoda) detectByShebang(filename string, filetype tFileType) (ft tFileType) {
 	shebang := getFirstLineOfFile(filename)
 	if shebang == filetype.Shebang {
 		ft = filetype

@@ -11,7 +11,7 @@ import (
 	"github.com/jedib0t/go-pretty/table"
 )
 
-func (coda tCoda) execute(cmds [][]string) (output []byte, exitcode int, err error) {
+func (coda *tCoda) execute(cmds [][]string) (output []byte, exitcode int, err error) {
 	var t table.Writer
 	if CLI.DryRun {
 		t = newTable()
@@ -40,7 +40,7 @@ func (coda tCoda) execute(cmds [][]string) (output []byte, exitcode int, err err
 	return output, exitcode, err
 }
 
-func (coda tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
+func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	var err error
 	var exitcode int
 	var stdBuffer bytes.Buffer

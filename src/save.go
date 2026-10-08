@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-func (coda tCoda) SaveFile(data []byte, targetPath string) (err error) {
+func (coda *tCoda) SaveFile(data []byte, targetPath string) (err error) {
 	tempMap := coda.makeTempMap(coda.VarMap)
 	tPath := os.ExpandEnv(coda.execTemplate(targetPath, tempMap))
 
