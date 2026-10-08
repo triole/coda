@@ -9,39 +9,46 @@ import (
 var (
 	regexCache     map[string]*regexp.Regexp
 	regexCacheMu   sync.RWMutex
-	regexCacheSize = 100 // Limit cache size to prevent memory bloat
+	regexCacheSize = 100
 )
 
 func init() {
 	regexCache = make(map[string]*regexp.Regexp, regexCacheSize)
 }
 
-// find uses cached regex compiles to avoid repeated parsing
+// Find uses cached regex compiles to avoid repeated parsing with double-check locking
 func find(rx string, str string) (result string) {
-	// Check cache first
+	// Check cache first (read lock)
 	regexCacheMu.RLock()
 	temp, cached := regexCache[rx]
 	regexCacheMu.RUnlock()
 
 	if !cached {
-		// Compile and cache
+		// Compile regex (outside lock to avoid blocking readers)
 		var err error
 		temp, err = regexp.Compile(rx)
 		if err != nil {
 			logger.Warn("invalid regex %q: %v\n", rx, err)
 			return ""
 		}
-		// Add to cache with size limit
+
+		// Insert into cache with write lock and double-check
 		regexCacheMu.Lock()
-		if len(regexCache) >= regexCacheSize {
-			// Simple LRU eviction: remove first key (not optimal but functional)
-			for key := range regexCache {
-				delete(regexCache, key)
-				break
+		defer regexCacheMu.Unlock()
+
+		// Double-check: another goroutine may have inserted it while we compiled
+		if temp2, ok := regexCache[rx]; ok {
+			temp = temp2
+		} else {
+			// Evict one entry if cache is full (random eviction, not LRU)
+			if len(regexCache) >= regexCacheSize {
+				for key := range regexCache {
+					delete(regexCache, key)
+					break
+				}
 			}
+			regexCache[rx] = temp
 		}
-		regexCache[rx] = temp
-		regexCacheMu.Unlock()
 	}
 
 	result = temp.FindString(str)
