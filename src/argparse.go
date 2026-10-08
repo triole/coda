@@ -102,7 +102,8 @@ func printBuildTags(buildtags string) {
 func getBindir() (s string) {
 	ex, err := os.Executable()
 	if err != nil {
-		panic(err)
+		logger.Warn("unable to detect binary directory %q", err)
+		return ""
 	}
 	s = filepath.Dir(ex)
 	return

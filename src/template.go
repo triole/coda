@@ -78,12 +78,12 @@ func (coda tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
 func (coda tCoda) execTemplate(tplStr string, varMap map[string]interface{}) string {
 	tmpl, err := template.New("new.tmpl").Parse(tplStr)
 	if err != nil {
-		panic(fmt.Errorf("template parse error: %w", err))
+		logger.Fatal("template parse error: %w", err)
 	}
 	buf := &bytes.Buffer{}
 	err = tmpl.Execute(buf, varMap)
 	if err != nil {
-		panic(fmt.Errorf("template execution error: %w", err))
+		logger.Fatal("template execution error: %w", err)
 	}
 	return buf.String()
 }
