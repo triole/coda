@@ -43,17 +43,18 @@ func (coda *tCoda) execute(cmds [][]string) (output []byte, exitcode int, err er
 func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	var err error
 	var exitcode int
-	var stdBuffer bytes.Buffer
+
+	// Use buffer pool to reduce allocations
+	buf := bufferPool.Get().(*bytes.Buffer)
+	defer bufferPool.Put(buf)
 
 	cmd := exec.Command(cmdArr[0], cmdArr[1:]...)
-	// mw := io.MultiWriter(&stdBuffer)
-	mw := io.MultiWriter(os.Stdout, &stdBuffer)
+	mw := io.MultiWriter(os.Stdout, buf)
 
 	cmd.Stdout = mw
 	cmd.Stderr = mw
 	if err = cmd.Run(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
-			// the program has exited with an exit code != 0
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
 				exitcode = status.ExitStatus()
 			}
@@ -62,5 +63,5 @@ func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	if err != nil {
 		logger.Error("an error occured: %q\n", err)
 	}
-	return stdBuffer.Bytes(), exitcode, err
+	return buf.Bytes(), exitcode, err
 }
