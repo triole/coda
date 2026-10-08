@@ -8,7 +8,7 @@ func (coda *tCoda) SaveFile(data []byte, targetPath string) (err error) {
 	tempMap := coda.makeTempMap(coda.VarMap)
 	tPath := os.ExpandEnv(coda.execTemplate(targetPath, tempMap))
 
-	logger.Info("save file %q\n", tPath)
+	logger.Info("save file %q", tPath)
 	file, err := os.OpenFile(
 		tPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0640,
 	)

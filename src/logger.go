@@ -62,7 +62,7 @@ func (l *Logger) Error(format string, args ...interface{}) {
 func (l *Logger) Fatal(format string, args ...interface{}) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	l.logger.Fatalf("[FATAL] "+format, args...)
+	l.logger.Fatalf("[FATAL] "+format+"\n", args...)
 }
 
 func SetLogLevel(level LogLevel) {
