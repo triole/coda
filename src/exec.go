@@ -61,7 +61,7 @@ func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 		}
 	}
 	if err != nil {
-		logger.Error("an error occured: %q\n", err)
+		logger.Error("an error occurred: %v", err)
 	}
 	return buf.Bytes(), exitcode, err
 }
