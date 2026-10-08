@@ -90,16 +90,23 @@ func (coda *tCoda) execTemplate(tplStr string, varMap map[string]interface{}) st
 	coda.cacheMu.RUnlock()
 
 	if !cached {
-		// Parse template if not cached
+		// Parse template (outside lock to avoid blocking readers)
 		var err error
 		tmpl, err = template.New("new.tmpl").Parse(tplStr)
 		if err != nil {
 			logger.Fatal("template parse error: %w", err)
 		}
-		// Write lock to add to cache
+
+		// Insert into cache with write lock and double-check
 		coda.cacheMu.Lock()
-		coda.tmplCache[tplStr] = tmpl
-		coda.cacheMu.Unlock()
+		defer coda.cacheMu.Unlock()
+
+		// Double-check: another goroutine may have inserted it while we parsed
+		if tmpl2, ok := coda.tmplCache[tplStr]; ok {
+			tmpl = tmpl2
+		} else {
+			coda.tmplCache[tplStr] = tmpl
+		}
 	}
 
 	// Use buffer pool to reduce allocations
