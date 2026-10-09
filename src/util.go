@@ -16,6 +16,9 @@ func getFirstLineOfFile(filename string) (l string) {
 		logger.Fatal("error reading file %q: %v", filename, err)
 	}
 	scanner := bufio.NewScanner(f)
+	// Limit line size to prevent OOM on malicious/extremely long lines
+	buf := make([]byte, 64*1024)
+	scanner.Buffer(buf, 1024*1024)
 	for scanner.Scan() {
 		l = scanner.Text()
 		break
