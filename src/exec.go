@@ -48,9 +48,8 @@ func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	var err error
 	var exitcode int
 
-	// Use buffer pool to reduce allocations
 	buf := bufferPool.Get().(*bytes.Buffer)
-	defer bufferPool.Put(buf)
+	defer func() { buf.Reset(); bufferPool.Put(buf) }()
 
 	cmd := exec.Command(cmdArr[0], cmdArr[1:]...)
 	mw := io.MultiWriter(os.Stdout, buf)
@@ -67,5 +66,9 @@ func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 	if err != nil {
 		logger.Error("an error occurred: %v", err)
 	}
-	return buf.Bytes(), exitcode, err
+
+	// Capture output data as a copy before returning buffer to pool
+	result := make([]byte, buf.Len())
+	copy(result, buf.Bytes())
+	return result, exitcode, err
 }
