@@ -73,10 +73,9 @@ func (coda *tCoda) makeTempMap(varMap tVarMap) (tempMap map[string]interface{}) 
 	return
 }
 
-func (coda *tCoda) iterTemplate(arr []string, varMap tVarMap) (r []string) {
+func (coda *tCoda) iterTemplate(arr []string, tempMap map[string]interface{}) (r []string) {
 	// Pre-allocate result slice to avoid reallocations
 	r = make([]string, len(arr))
-	tempMap := coda.makeTempMap(varMap)
 	for i, el := range arr {
 		r[i] = os.ExpandEnv(coda.execTemplate(el, tempMap))
 	}

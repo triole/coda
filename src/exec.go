@@ -19,8 +19,12 @@ func (coda *tCoda) execute(cmds [][]string) (output []byte, exitcode int, err er
 			"commands that would have been run",
 		})
 	}
+
+	// Pre-compute tempMap once for all commands (avoid repeated allocations)
+	tempMap := coda.makeTempMap(coda.VarMap)
+
 	for _, cmdArr := range cmds {
-		cmdArr = coda.iterTemplate(cmdArr, coda.VarMap)
+		cmdArr = coda.iterTemplate(cmdArr, tempMap)
 		if CLI.DryRun {
 			t.AppendRow(
 				[]interface{}{
