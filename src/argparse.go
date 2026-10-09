@@ -79,7 +79,7 @@ type tPrinterEl struct {
 func printBuildTags(buildtags string) {
 	regexp, _ := regexp.Compile(`({|}|,)`)
 	s := regexp.ReplaceAllString(buildtags, "\n")
-	s = strings.Replace(s, "_subversion: ", "version: "+appMainversion+".", -1)
+	s = strings.ReplaceAll(s, "_subversion: ", "version: "+appMainversion+".")
 	fmt.Printf("\n%s\n%s\n\n", appName, appDescription)
 	arr := strings.Split(s, "\n")
 	var pr tPrinter
