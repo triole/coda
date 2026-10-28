@@ -9,8 +9,8 @@ import (
 )
 
 type tCoda struct {
-	FileTypes     []tFileType          `yaml:"filetypes"`
-	Settings      tSettings            `yaml:"settings"`
+	FileTypes     []tFileType `yaml:"filetypes"`
+	Settings      tSettings   `yaml:"settings"`
 	FileConfig    string
 	FileToProcess string
 	VarMap        tVarMap
@@ -30,11 +30,11 @@ func initCoda(fileConfig, fileToProcess string) (coda tCoda) {
 		var err error
 		raw, err := os.ReadFile(coda.FileConfig)
 		if err != nil {
-			logger.Fatal("error reading config %q, %q", coda.FileConfig, err)
+			log.Fatal("error reading config", map[string]any{"file": coda.FileConfig, "error": err})
 		}
 		err = yaml.Unmarshal(raw, &coda)
 		if err != nil {
-			logger.Fatal("unmarshal error %q, %q", coda.FileConfig, err)
+			log.Fatal("unmarshal error", map[string]any{"file": coda.FileConfig, "error": err})
 		}
 	}
 	coda.VarMap = makeVarMap(fileToProcess)

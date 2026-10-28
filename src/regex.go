@@ -28,7 +28,7 @@ func find(rx string, str string) (result string) {
 		var err error
 		temp, err = regexp.Compile(rx)
 		if err != nil {
-			logger.Warn("invalid regex %q: %v\n", rx, err)
+			log.Warn("invalid regex", map[string]any{"regex": rx, "error": err})
 			return ""
 		}
 

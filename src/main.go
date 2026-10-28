@@ -3,10 +3,17 @@ package main
 import (
 	"fmt"
 
+	"coda/src/logger"
+
 	"github.com/jedib0t/go-pretty/table"
 )
 
+var log *logger.Logger
+
 func main() {
+	log = logger.NewLogger("info", "", false)
+	defer log.Close()
+
 	parseArgs()
 
 	fileConfig := makeAbs(CLI.Config)
@@ -37,7 +44,7 @@ func main() {
 		if len(stdout) > 1 {
 			coda.SaveFile(stdout, ft.WriteStdoutTo)
 		} else {
-			logger.Warn("stdout is empty, did not write: %q", coda.FileToProcess)
+			log.Warn("stdout is empty, did not write", map[string]any{"file": coda.FileToProcess})
 		}
 	}
 }

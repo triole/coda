@@ -64,7 +64,7 @@ func (coda *tCoda) runCmd(cmdArr []string) ([]byte, int, error) {
 		}
 	}
 	if err != nil {
-		logger.Error("an error occurred: %v", err)
+		log.Error("an error occurred", map[string]any{"error": err})
 	}
 
 	// Capture output data as a copy before returning buffer to pool

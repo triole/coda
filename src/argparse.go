@@ -65,7 +65,7 @@ func parseArgs() {
 		os.Exit(0)
 	}
 	if CLI.Filename == "" {
-		logger.Fatal("positional arg required, please pass file name")
+		log.Fatal("positional arg required, please pass file name", nil)
 	}
 	// ctx.FatalIfErrorf(err)
 }
@@ -102,7 +102,7 @@ func printBuildTags(buildtags string) {
 func getBindir() (s string) {
 	ex, err := os.Executable()
 	if err != nil {
-		logger.Warn("unable to detect binary directory %q", err)
+		log.Warn("unable to detect binary directory", map[string]any{"error": err})
 		return ""
 	}
 	s = filepath.Dir(ex)

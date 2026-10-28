@@ -93,7 +93,7 @@ func (coda *tCoda) execTemplate(tplStr string, varMap map[string]interface{}) st
 		var err error
 		tmpl, err = template.New("new.tmpl").Parse(tplStr)
 		if err != nil {
-			logger.Fatal("template parse error: %w", err)
+			log.Fatal("template parse error", map[string]any{"error": err})
 		}
 
 		// Insert into cache with write lock and double-check
@@ -115,7 +115,7 @@ func (coda *tCoda) execTemplate(tplStr string, varMap map[string]interface{}) st
 
 	err := tmpl.Execute(buf, varMap)
 	if err != nil {
-		logger.Fatal("template execution error: %w", err)
+		log.Fatal("template execution error", map[string]any{"error": err})
 	}
 	return buf.String()
 }
