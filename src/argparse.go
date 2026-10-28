@@ -65,7 +65,7 @@ func parseArgs() {
 		os.Exit(0)
 	}
 	if CLI.Filename == "" {
-		log.Fatal("positional arg required, please pass file name", nil)
+		log.Fatal("positional arg required, please pass file name", map[string]any{})
 	}
 	// ctx.FatalIfErrorf(err)
 }
